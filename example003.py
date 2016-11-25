@@ -43,7 +43,7 @@ low_prices = []
 volumes = []
 adjusted_close = []
 
-#for s in range(4, len(tickers)):
+#for s in range(4, len(tickers)): #this only reads the first line of the data from yahoo if you uncomment it... not sure why
 #    op = [] # open price
 #    cp = [] # close price
 #    hp = [] # high price
