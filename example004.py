@@ -1,5 +1,6 @@
 import csv
 import urllib
+import numpy as np
 
 def make_url(ticker_symbol):
     return "http://ichart.finance.yahoo.com/table.csv?s=" + ticker_symbol
@@ -47,8 +48,8 @@ high_prices = []
 low_prices = []
 volumes = []
 adjusted_close = []
-
-for s in range(4, 20): 
+print tickers[4]
+for s in range(4, 1000): 
     op = [] # open price
     cp = [] # close price
     hp = [] # high price
@@ -62,10 +63,15 @@ for s in range(4, 20):
     pull_data(tickers[s]) #create local csv file
     with open(tickers[s] + ".csv") as csvfile:
         s_data = csv.reader(csvfile, delimiter = ',')
-        if row[0] == ("Date"): 
+#        print row[0]
+#        if row[0] == "Date":
+#        print row[1] #never reaches
 #        print s_data
+        try:
             for row in s_data:
 #            print row
+#                print tickers[s]
+#                print row[1]
                 d.append(row[0]) #this isn't working properly
                 op.append(row[1])
                 hp.append(row[2])
@@ -73,6 +79,8 @@ for s in range(4, 20):
                 cp.append(row[4])
                 v.append(row[5])
                 adj.append(row[6])
+        except IndexError:
+            continue
 #            print op
     dates.append(d)
     open_prices.append(op)
@@ -83,6 +91,7 @@ for s in range(4, 20):
 
 
 print open_prices #uncomment here
+print len(open_prices)
 #for i in range(1, len(tickers)):
     
 
