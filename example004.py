@@ -47,7 +47,7 @@ def create_data():
             try:
                 for row in s_data:
                     try:
-                        d.append((row[0])) #this isn't working properly
+                        d.append((row[0])) 
                         op.append(float(row[1]))
                         hp.append(float(row[2]))
                         lp.append(float(row[3]))
@@ -58,7 +58,7 @@ def create_data():
                         continue
             except IndexError:
                 continue
-
+       
         dates.append(d)
         open_prices.append(op)
         high_prices.append(hp)
@@ -66,15 +66,71 @@ def create_data():
         volumes.append(v)
         adjusted_close.append(adj)
 
-        np_dates = np.array(dates)
-        np_open_prices = np.array(open_prices)
-        np_high_prices = np.array(high_prices)
-        np_low_prices = np.array(low_prices)
-        np_volumes = np.array(volumes)
-        np_adjusted_close = np.array(adjusted_close)
-        return np_dates, np_open_prices, np_high_prices, np_low_prices, np_volumes, np_adjusted_close
+#        np_dates = np.array(dates)
+#        np_open_prices = np.array(open_prices) #ignore for now
+#        np_high_prices = np.array(high_prices)
+#        np_low_prices = np.array(low_prices)
+#        np_volumes = np.array(volumes)#
+    np_adjusted_close = np.array([np.array(adjusted_closei) for adjusted_closei in adjusted_close]) #use
+    np.flipud(np_adjusted_close) #make oldest values first
+    print np_adjusted_close[5][1]
+    print np_adjusted_close[1][30]/np_adjusted_close[1][0]
+    monthly_change = [np_adjusted_close[i][30:]/np_adjusted_close[i][0:] for i in np_adjusted_close] #this line
+#        print np_adjusted_close[0][1]
+#    print np_adjusted_close
+#    print np_adjusted_close.size
+#    print type(np_adjusted_close[1])
+#    print np_adjusted_close[0:,30:]/np_adjusted_close[0::]     
+#    for i in range(0, np_adjusted_close.size):
+#        print np_adjusted_close[0][i] 
+#    total = []
+#    input_vector = [] #this will be list of 3D lists
+#        mean = np_adjusted_close[30:][0]/np_adjusted_close[0:][0]
+#        print mean
+#        for i in range(0, np_adjusted_close.size):
+#            s_vector = [] #input vector for each stock
+#            for j in range(0, np_adjusted_close.size):
+#                try:
+#                    change = (np_adjusted_close[0][i+30]/np_adjusted_close[0][i]) - 1
+#                    print change
+#                    total.append(change)
+#                    sign = 0
+#                    if change > 0:
+#                       sign = 1
+#                    elif change == 0:
+#                       sign = 0
+#                    else: 
+#                       sign = -1
+                    
+#write code to find magnitude
+    # find average return of all stocks
+    # average return stock(i) - average return(market) = expected sliding monthly return E(R)
+    # center distribution at E(R)
+    # calculate probability of x1 occurring given distribution
+    # condense to single order of magnitude 
+#                except IndexError:
+#                    break
+#        print total
+#    np_total = np.array(total)
+#    mean_total = []
+#    for i in range(0, np_total.size):
+#        mean_total = np.mean(np_total[i])
+#            for j in range(0, np_total[i].size)
+#        print mean_total        
+#        mean_total_return = np.mean(np_total)
+#       mean_sreturn = []
+#        for i in range(0, mean_total_return.size):
+#            mean_sreturn.append(np.mean(mean_total_return[i] - mean_total_return))
+#        print mean_sreturn
+#conversion to tensor theano.tensor.as_tensor_variable(x, name=None, ndim=None)
+        
+#30 day moving average
 
-print create_data()       
+#np array train data & labels
+#np array test data & labels
+#        return np_dates, np_open_prices, np_high_prices, np_low_prices, np_volumes, np_adjusted_close
+
+create_data()       
 #d = Data()
 #print d.create_data()
 #overvalued, undervalued
