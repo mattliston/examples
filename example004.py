@@ -1,6 +1,11 @@
 import csv
 import urllib
 import numpy as np
+# add some formatting defaults for print
+np.set_printoptions(threshold='nan')
+np.set_printoptions(linewidth=200)
+np.set_printoptions(formatter={'float': '{:12.8f}'.format, 'int': '{:4d}'.format})
+
 
 def create_data():
 
@@ -65,12 +70,25 @@ def create_data():
         low_prices.append(lp)
         volumes.append(v)
         adjusted_close.append(adj)
+        print 'ticker',tickers[s],'len(adjusted_close)',len(adjusted_close),'len(adj)',len(adj),max(len(x) for x in adjusted_close)
 
 #        np_dates = np.array(dates)
 #        np_open_prices = np.array(open_prices) #ignore for now
 #        np_high_prices = np.array(high_prices)
 #        np_low_prices = np.array(low_prices)
 #        np_volumes = np.array(volumes)#
+    np_adjusted_close = np.empty([len(adjusted_close),max(len(x) for x in adjusted_close)], dtype='float') # numpy arrays are fixed size, create space for [num_tickers,largest_ticker_length]
+    np_adjusted_close.fill(np.nan) # fill with default value = "not a number" (np.nan)
+    for i in range(len(adjusted_close)):
+        np_adjusted_close[i,0:len(adjusted_close[i])] = adjusted_close[i]
+    print 'np_adjusted_close.shape', np_adjusted_close.shape
+    np_c = np.fliplr(np_adjusted_close) # make oldest values first (flip each row)
+    print np_c[:,-30:]
+    monthly_change = np_c[:,30:] / np_c[:,0:-30]
+    print 'monthly_change.shape', monthly_change.shape
+    print monthly_change[:,-10:] # print last 10 entries of each ticker (negative indices count from the end)
+    exit(0)
+
     np_adjusted_close = np.array([np.array(adjusted_closei) for adjusted_closei in adjusted_close]) #use
     np.flipud(np_adjusted_close) #make oldest values first
     print np_adjusted_close[5][1]
