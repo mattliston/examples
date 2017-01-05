@@ -7,6 +7,7 @@ import theano.tensor as T
 import lasagne as L
 import argparse
 import time
+from six.moves import cPickle
 np.set_printoptions(threshold='nan')
 np.set_printoptions(linewidth=200)
 np.set_printoptions(formatter={'float': '{:12.8f}'.format, 'int': '{:4d}'.format})
@@ -24,6 +25,7 @@ parser.add_argument('--nepoch', help='number of epochs, default=100', default=10
 parser.add_argument('--nbatch', help='number of batches per eopch, default=100', default=100, type=int)
 parser.add_argument('--batchsize', help='batch size, default 1000', default=1000, type=int)
 parser.add_argument('--test', help='test fraction, default 0.2', default=0.2, type=float)
+parser.add_argument('--model', help='output model filename')
 args = parser.parse_args()
 print args
 
@@ -120,3 +122,7 @@ for i in range(args.nepoch):
 
     print 'epoch {:8d} loss {:12.8f} grad {:12.8f} accuracy {:12.8f} n_zero {:6d} n_one {:6d} t_epoch {:4d} t_total {:8d}'.format(i, tloss/args.nbatch, tnorm/args.nbatch, tacc, np.sum(val_predictions==0), np.sum(val_predictions==1), int(time.time()-t), int(time.time()-t0))
     t = time.time()
+
+f = open(args.model, 'wb')
+cPickle.dump(L.layers.get_all_param_values(network), f, protocol=cPickle.HIGHEST_PROTOCOL)
+f.close()
