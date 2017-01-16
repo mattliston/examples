@@ -135,8 +135,9 @@ for ticker, i in sorted(symmap.items()):
             val_output = test_fn(current_window)
             val_prediction = np.argmax(val_output[0])
             if (np.isnan(current_window).sum()>0):
-                print 'NAN', 'ticker', ticker, 'date', date, 'current window', current_window
-                wr.writerow([ticker,date,-1])
+                continue
+                #print 'NAN', 'ticker', ticker, 'date', date, 'current window', current_window
+                #wr.writerow([ticker,date,-1])
             else:
                 print 'ticker', ticker, 'date', date, 'val_prediction', val_prediction, 'current window', current_window
                 wr.writerow([ticker,date,val_prediction,np_change[i,j-window]])
