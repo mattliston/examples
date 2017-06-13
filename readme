@@ -1,0 +1,5 @@
+docker build -t ml .
+
+echo "if [ -f /.dockerenv ]; then" >> ~/.bashrc
+echo "PS1='${debian_chroot:+($debian_chroot)}docker@\h:\w\$ '" >> ~/.bashrc
+echo "fi" >> ~/.bashrc

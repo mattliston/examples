@@ -1,0 +1,24 @@
+#!/bin/bash
+
+if [ -f /.dockerenv ]; then
+    echo 'ALREADY IN DOCKER CONTAINER'
+    exit
+fi
+
+xhost +
+nvidia-docker run \
+    --rm=true \
+    --interactive=true \
+    --tty=true \
+    --user=$(id -u) \
+    --workdir=$PWD \
+    --env="DISPLAY" \
+    --net=host \
+    --volume="/etc/group:/etc/group:ro" \
+    --volume="/etc/passwd:/etc/passwd:ro" \
+    --volume="/etc/shadow:/etc/shadow:ro" \
+    --volume="/etc/sudoers.d:/etc/sudoers.d:ro" \
+    --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+    --volume="/home:/home" \
+    --volume="/home2:/home2" \
+    ml /bin/bash -i
