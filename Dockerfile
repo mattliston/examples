@@ -1,15 +1,20 @@
 # This is a comment
-FROM nvidia/cuda:8.0-cudnn5-devel
+FROM nvidia/cuda:8.0-cudnn6-devel
+ENV http_proxy http://173.36.224.109:80/
+ENV https_proxy http://173.36.224.109:80/
 ENV DEBIAN_FRONTEND noninteractive
+MAINTAINER Rob Liston <rliston@cisco.com>
 RUN apt-get update
+RUN apt-get install -y apt-utils
 RUN apt-get install -y build-essential cmake git yasm pkg-config vim wget python-pip python-dev
+RUN pip install --upgrade pip
 # NUMPY
 RUN pip install numpy
 RUN pip install scipy
 RUN apt-get update
 RUN apt-get install -y python-matplotlib
 # TENSORFLOW
-RUN pip install --upgrade https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow_gpu-1.2.0rc2-cp27-none-linux_x86_64.whl
+RUN pip install --upgrade https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow_gpu-1.3.0-cp27-none-linux_x86_64.whl
 # FFMPEG
 RUN git clone -b n3.1.2 https://github.com/ffmpeg/ffmpeg /tmp/ffmpeg
 RUN apt-get update
@@ -34,5 +39,16 @@ RUN apt-get update
 RUN apt-get install -y eog bc mplayer mplayer2
 RUN apt-get install -y apt-utils sudo
 RUN apt-get install -y libcanberra-gtk-module
+RUN pip install scikit-learn
+RUN pip install h5py
+RUN apt-get install -y libffi-dev libssl-dev openssl
+RUN pip install scrapy
+RUN apt-get install -y curl
+RUN apt-get install -y zip
+RUN apt-get install -y xloadimage
+# 3D RENDERING
+RUN apt-get install -y povray povray-examples povray-includes
+RUN pip install fonttools
+RUN pip install dpkt
 
 RUN ldconfig
